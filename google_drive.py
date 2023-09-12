@@ -49,7 +49,7 @@ class DrivePDFtoDF():
         drive_service = build('drive', 'v3', credentials=creds)
         return drive_service
     
-    def get_pdf_listdir(self, folder_id):
+    def get_pdf_listdir(self, folder_id)->list[str]:
         """
         list of pdf files in dir
             return (file_name,file_id) 
@@ -63,7 +63,7 @@ class DrivePDFtoDF():
             files_list.append((file['name'],file['id']))
         return files_list
 
-    def pdf_to_df(self, pdf_file_id):
+    def pdf_to_df(self, pdf_file_id) ->pd.DataFrame:
         """transform pdf to df"""
         request = self.drive_service.files().get_media(fileId=pdf_file_id)
         pdf_bytes = request.execute()

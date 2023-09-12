@@ -1,9 +1,12 @@
 import streamlit as st
 import pandas as pd
 
-from transform import get_categories, set_dtype
-from streamlit_func import hbar_spends, bar_income_spend_compare
+from transform import get_categories
+from load_data import transfer_data_from_drive
+from streamlit_func import set_dtype, hbar_spends, bar_income_spend_compare
 from google_drive import SpreadSheet
+
+
 
 def app():
     categories = get_categories()
@@ -14,6 +17,7 @@ def app():
     max_date = data['date'].max()
     min_date = data['date'].min()
 
+    st.button("Update data!", on_click=transfer_data_from_drive)
     # Create the date range widget
     start_date = st.date_input("Start date:",min_date,min_value=min_date, max_value=max_date)
     end_date = st.date_input("End date:",max_date,min_value=min_date, max_value=max_date)

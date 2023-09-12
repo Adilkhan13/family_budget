@@ -2,6 +2,11 @@
 import plotly.express as px
 import pandas as pd
 
+def set_dtype(df):
+    df['date'] = pd.to_datetime(df['date'],format = '%Y-%m-%d')
+    df['price'] = df['price'].astype(str).str.replace("\xa0",'').str.replace(" ",'').str.replace(",",'.').astype(float)
+    return df
+
 def hbar_spends(data,start_date,end_date,selected_options,categories):
     mask = (
         (data['date'].dt.date >= start_date)&
