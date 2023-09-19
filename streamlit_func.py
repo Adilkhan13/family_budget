@@ -2,11 +2,6 @@
 import plotly.express as px
 import pandas as pd
 
-def set_dtype(df):
-    df['date'] = pd.to_datetime(df['date'],format = '%Y-%m-%d')
-    df['price'] = df['price'].astype(str).str.replace("\xa0",'').str.replace(" ",'').str.replace(",",'.').astype(float)
-    return df
-
 def hbar_spends(data,start_date,end_date,selected_options,categories):
     mask = (
         (data['date'].dt.date >= start_date)&
@@ -47,6 +42,23 @@ def bar_income_spend_compare(data,start_date,end_date,selected_options):
         'Категория':['Затраты','Прибыль'],
         'Сумма':[spends,incomes]
         })
-    fig = px.bar(data, x = 'Категория', y = 'Сумма')
+    fig = px.bar(data, x = 'Категория', y = 'Сумма',title= 'Соотношение доходов и расходов')
+    
+    return fig
+
+def line_catspends_by_months(data,selected_options,selected_category):
+    mask = (
+        (data['name'].isin(selected_options))&
+        (data['category'] == selected_category)
+    )
+    data = data[mask]
+    data['price'] = data['price'] * -1
+    data['month'] = data['date'].dt.strftime('%Y-%m')
+
+    data = data.groupby(data['month']).sum()['price']
+    
+    
+    data = data.reset_index()
+    fig = px.line(data, x = 'month', y = 'price', markers=True, title= 'Затраты по категории по месяцам')
     
     return fig

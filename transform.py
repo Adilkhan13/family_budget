@@ -13,6 +13,14 @@ def get_categories()->list:
     df = keys_sheet.get_df()
     return df['category'].unique().tolist()
 
+def get_main_df()->list:
+    keys_sheet = SpreadSheet(sheet_name='main')
+    df = keys_sheet.get_df()
+    df['date'] = pd.to_datetime(df['date'],format = '%Y-%m-%d')
+    df['price'] = df['price'].astype(str).str.replace("\xa0",'').str.replace(" ",'').str.replace(",",'.').astype(float)
+    return df
+
+
 def transform_kaspidf(df:pd.DataFrame, name:str, replace_keys:dict = get_keys())-> pd.DataFrame:
     """
     Функция читает данные со стандартного отчета по затратам Каспи
