@@ -54,10 +54,8 @@ def line_catspends_by_months(data,selected_options,selected_category):
     data = data[mask]
     data['price'] = data['price'] * -1
     data['month'] = data['date'].dt.strftime('%Y-%m')
-
-    data = data.groupby(data['month']).sum()['price']
     
-    
+    data = data[['month','price']].groupby('month').sum()['price']
     data = data.reset_index()
     fig = px.line(data, x = 'month', y = 'price', markers=True, title= 'Затраты по категории по месяцам')
     

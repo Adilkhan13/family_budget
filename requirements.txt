@@ -1,4 +1,4 @@
-tabula
+tabula-py
 gspread
 pandas
 google-api-python-client

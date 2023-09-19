@@ -1,5 +1,5 @@
 import streamlit as st
-from transform import get_categories, get_main_df
+from transform import get_categories, get_main_df, resubmit_category_column
 from load_data import transfer_data_from_drive
 from streamlit_func import hbar_spends, bar_income_spend_compare,line_catspends_by_months
 
@@ -14,7 +14,8 @@ def app():
     with st.sidebar:
         st.header("Configuration")
         # Create the date range widget
-        st.button("Update data!", on_click=transfer_data_from_drive)
+        st.button("Load data", on_click=transfer_data_from_drive)
+        st.button('Update data', on_click=resubmit_category_column)
         start_date = st.date_input("Start date:",default_start_date,min_value=min_date, max_value=max_date)
         end_date = st.date_input("End date:",default_end_date,min_value=min_date, max_value=max_date)
         container = st.container()

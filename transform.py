@@ -51,3 +51,10 @@ def transform_kaspidf(df:pd.DataFrame, name:str, replace_keys:dict = get_keys())
     df = df.sort_values('date',ascending = False)[['date','name','category_raw','category','price','comments']]
     df['date'] = df['date'].dt.strftime('%Y-%m-%d')
     return df
+
+def resubmit_category_column():
+    main_sheet = SpreadSheet('main')
+    df = main_sheet.get_df()
+    replace_keys = get_keys()
+    df['category'] = df['category_raw'].str.upper().replace(replace_keys)
+    main_sheet.relace_data(df)
