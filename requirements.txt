@@ -1,0 +1,5 @@
+tabula
+gspread
+pandas
+google-api-python-client
+streamlit

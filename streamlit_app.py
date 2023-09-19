@@ -1,5 +1,4 @@
 import streamlit as st
-import pandas as pd
 
 from transform import get_categories
 from load_data import transfer_data_from_drive

@@ -1,7 +1,12 @@
 import json
+import os 
 
-with open('.secrets','r') as f:
-    secrets = json.loads(f.read())
+if os.path.exists('.secrets'):
+    with open('.secrets','r') as f:
+        secrets = json.loads(f.read())
+else:
+    import streamlit as st
+    secrets = st.secrets
 
 NOTION_API_KEY = secrets['NOTION']['NOTION_API_KEY']
 NOTION_DB_ID = secrets['NOTION']['NOTION_DB_ID']
