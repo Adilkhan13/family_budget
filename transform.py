@@ -48,7 +48,7 @@ def transform_kaspidf(df:pd.DataFrame, name:str, replace_keys:dict = get_keys())
     df['name'] = name.capitalize()
     df['comments'] = None
     
-    df = df.sort_values('date',ascending = False)[['date','name','category_raw','category','price','comments']]
+    df = df.sort_values('date',ascending = False)[['date','name','category_raw','category','operation','price','comments']]
     df['date'] = df['date'].dt.strftime('%Y-%m-%d')
     return df
 
