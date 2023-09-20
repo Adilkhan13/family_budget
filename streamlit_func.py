@@ -31,12 +31,13 @@ def bar_income_spend_compare(data,start_date,end_date,selected_options):
     mask = (
         (data['date'].dt.date >= start_date)&
         (data['date'].dt.date <= end_date)&
-        (data['name'].isin(selected_options))
+        (data['name'].isin(selected_options))&
+        (~data['category'].isin(['С KASPI ДЕПОЗИТА','НА KASPI ДЕПОЗИТ'])
     )
     data = data[mask]
     spends = data[data['price']<0]['price'].sum()
     spends = spends * -1
-    incomes = data[data['price']>0]['price'].sum()
+    incomes = data[data['category']=='ЗАРПЛАТА']['price'].sum()
 
     data = pd.DataFrame({
         'Категория':['Затраты','Прибыль'],

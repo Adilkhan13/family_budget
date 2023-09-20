@@ -57,4 +57,7 @@ def resubmit_category_column():
     df = main_sheet.get_df()
     replace_keys = get_keys()
     df['category'] = df['category_raw'].str.upper().replace(replace_keys)
+    # set upper
+    df['operation'] = df['operation'].str.upper()
+    df['name'] = df['name'].str.capitalize()
     main_sheet.relace_data(df)
