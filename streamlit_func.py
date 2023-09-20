@@ -1,8 +1,9 @@
 
 import plotly.express as px
+import streamlit as st
 import pandas as pd
 
-def hbar_spends(data,start_date,end_date,selected_options,categories):
+def hbar_spends(data,start_date,end_date,selected_options,categories,**kwargs)->None:
     mask = (
         (data['date'].dt.date >= start_date)&
         (data['date'].dt.date <= end_date)&
@@ -25,9 +26,9 @@ def hbar_spends(data,start_date,end_date,selected_options,categories):
     )
     # Sort the data by price
     fig.update_layout(yaxis={'categoryorder':'total ascending'}) # add only this line
-    return fig
+    st.write(fig)
 
-def bar_income_spend_compare(data,start_date,end_date,selected_options):
+def bar_income_spend_compare(data,start_date,end_date,selected_options,**kwargs)->None:
     mask = (
         (data['date'].dt.date >= start_date)&
         (data['date'].dt.date <= end_date)&
@@ -45,9 +46,14 @@ def bar_income_spend_compare(data,start_date,end_date,selected_options):
         })
     fig = px.bar(data, x = 'Категория', y = 'Сумма',title= 'Соотношение доходов и расходов')
     
-    return fig
+    st.write(fig)
 
-def line_catspends_by_months(data,selected_options,selected_category):
+def line_catspends_by_months(data,selected_options,categories,**kwargs)->None:
+    subcontainer = st.container()
+    selected_category = subcontainer.selectbox(
+            "Select one or more options:",
+            categories,
+    )
     mask = (
         (data['name'].isin(selected_options))&
         (data['category'] == selected_category)
@@ -59,5 +65,11 @@ def line_catspends_by_months(data,selected_options,selected_category):
     data = data[['month','price']].groupby('month').sum()['price']
     data = data.reset_index()
     fig = px.line(data, x = 'month', y = 'price', markers=True, title= 'Затраты по категории по месяцам')
-    
-    return fig
+
+    st.write(fig)
+
+GRAPH_DICT = {
+        'Затраты по категориям':hbar_spends, 
+        'Соотношение доходов и расходов':bar_income_spend_compare, 
+        'Затраты по категории по месяцам':line_catspends_by_months,
+    }

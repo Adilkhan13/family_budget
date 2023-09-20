@@ -43,7 +43,7 @@ def transform_kaspidf(df:pd.DataFrame, name:str, replace_keys:dict = get_keys())
     # rename known cattegories
     # can be added in google sheet
     df['category'] = df['category_raw'].str.upper().replace(replace_keys)
-
+    df['operation'] = df['operation'].str.upper()
     # add some new cols
     df['name'] = name.capitalize()
     df['comments'] = None
