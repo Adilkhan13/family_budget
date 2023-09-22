@@ -1,13 +1,15 @@
 import streamlit as st
-from transform import get_categories, get_main_df, resubmit_category_column
+from google_drive import Datasets
 from load_data import transfer_data_from_drive
-from streamlit_func import GRAPH_DICT
+from streamlit_graphs import GRAPH_DICT
 
 
 
 def app():
-    categories = get_categories()
-    data = get_main_df()
+    data = Datasets()
+    categories = data.get_categories()
+    data = data.get_main_df()
+    resubmit_category_column = data.update_category_column
     max_date = data['date'].max()
     min_date = data['date'].min()
     default_start_date = max_date.replace(day=1)
