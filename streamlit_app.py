@@ -6,10 +6,10 @@ from streamlit_graphs import GRAPH_DICT
 
 
 def app():
-    data = Datasets()
-    categories = data.get_categories()
-    data = data.get_main_df()
-    resubmit_category_column = data.update_category_column
+    datasets = Datasets()
+    categories = datasets.get_categories()
+    data = datasets.get_main_df()
+    resubmit_category_column = datasets.update_category_column
     max_date = data['date'].max()
     min_date = data['date'].min()
     default_start_date = max_date.replace(day=1)
