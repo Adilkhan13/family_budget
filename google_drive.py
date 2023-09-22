@@ -100,7 +100,7 @@ class Datasets():
         return df['category'].unique().tolist()
 
     def get_main_df(self)->pd.DataFrame:
-        df = self.main_sheet
+        df = self.main_sheet.get_df()
         df['date'] = pd.to_datetime(df['date'],format = '%Y-%m-%d')
         df['price'] = df['price'].astype(str).str.replace("\xa0",'').str.replace(" ",'').str.replace(",",'.').astype(float)
         return df
