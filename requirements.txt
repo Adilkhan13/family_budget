@@ -4,3 +4,4 @@ pandas
 google-api-python-client
 streamlit
 plotly
+nbformat
