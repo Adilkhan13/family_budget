@@ -3,6 +3,9 @@ import plotly.express as px
 import streamlit as st
 import pandas as pd
 
+def amount_to_text(ser:pd.Series):
+    return (ser/1000).round().astype(str).str[:-2] + " тыс."
+
 def hbar_spends(data,start_date,end_date,selected_options,categories,**kwargs)->None:
     mask = (
         (data['date'].dt.date >= start_date)&
@@ -13,10 +16,10 @@ def hbar_spends(data,start_date,end_date,selected_options,categories,**kwargs)->
     )
     data = data[mask]
     data['price'] = data['price'] * -1
-
+    st
     data = data[['price','category']]
     grouped_data = data.groupby('category').sum().reset_index()
-    grouped_data['spends_thousands'] = (data['price']/1000).round().astype(str).str[:-2] + " тыс."
+    grouped_data['spends_thousands'] = amount_to_text(grouped_data['price'])
 
     fig = px.bar(
         grouped_data,
@@ -46,7 +49,9 @@ def bar_income_spend_compare(data,start_date,end_date,selected_options,**kwargs)
         'Категория':['Затраты','Прибыль'],
         'Сумма':[spends,incomes]
         })
-    fig = px.bar(data, x = 'Категория', y = 'Сумма',title= 'Соотношение доходов и расходов')
+    
+    data['Сумма в тыс'] = amount_to_text(data['Сумма'])
+    fig = px.bar(data, x = 'Категория', y = 'Сумма',title= 'Соотношение доходов и расходов', text = 'Сумма в тыс')
     
     st.write(fig)
 
@@ -66,7 +71,7 @@ def line_catspends_by_months(data,selected_options,categories,**kwargs)->None:
     
     data = data[['month','price']].groupby('month').sum()['price']
     data = data.reset_index()
-    data['price_thousands'] = (data['price']/1000).round().astype(str).str[:-2] + " тыс."
+    data['price_thousands'] = amount_to_text(data['price'])
     fig = px.bar(data, x = 'month', y = 'price', title= 'Затраты по категории по месяцам, тыс. тг', text = 'price_thousands')
 
     st.write(fig)
