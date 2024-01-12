@@ -7,7 +7,7 @@ def get_last_rdate(data:pd.DataFrame, name:str)->str:
     """возвращает последний отчетный период за которые были загружены данные"""
     name = name.capitalize()
     data['date'] = pd.to_datetime(data['date'],format = '%Y-%m-%d')
-    return data[data['name'] == name]['date'].max().strftime('%Y-%m-%d')
+    return data[data['name'] == name]['date'].max()
 
 def transfer_data_from_drive_by_user(user_name:str, user_pdf_folde_id:str)->None:
     """Загружает данные с пдф в spreadsheet, убирает последний период и проверяет наличие предыдущих"""
