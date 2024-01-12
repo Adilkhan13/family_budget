@@ -42,6 +42,8 @@ def app():
         options=GRAPH_DICT.keys(),
     )
 
+    data['category'][~data['category'].isin(categories)] = 'Другое'
+    categories.append('Другое')
     GRAPH_DICT[selected_page](
         data = data,
         start_date = start_date,
