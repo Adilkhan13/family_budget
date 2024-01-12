@@ -29,15 +29,17 @@ def transfer_data_from_drive_by_user(user_name:str, user_pdf_folde_id:str)->None
         raw_df = g_drive.pdf_to_df(file_id)
         # Категоризация и придание формата данным
         df = transform_kaspidf(raw_df,user_name)
+        df['date'] = pd.to_datetime(df['date'])
 
-        assert last_rdate > df['date'].min(), 'Не хватает промежутка, возьми период побольше'
+
+        assert last_rdate > df['date'].min(), f'Не хватает промежутка, возьми период побольше last dwh date {last_rdate}, kaspi {df["date"].min()}'  
 
         # последняя дата отчета не берется так как она обычно не полная
         df = df[
                 (df['date']<df['date'].max())&
                 (df['date']>last_rdate)
             ].sort_values('date',ascending=True)
-        
+        df['date'] = df['date'].dt.strftime('%Y-%m-%d')
         # загружаем данные
         main_sheet.append_data(df)
         # отмечаем файл pdf как прочитанный
